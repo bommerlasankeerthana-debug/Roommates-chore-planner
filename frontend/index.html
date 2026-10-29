@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7ff">
+  <meta name="description" content="Plan, assign, and track shared household chores with your roommates.">
+  <title>Roommates Chore Planner</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Roommates Chore Planner home">
+        <span class="brand-mark">✓</span>
+        <span>roomie<span class="brand-light">plan</span></span>
+      </a>
+      <div class="topbar-right">
+        <span id="user-greeting" class="user-greeting hidden"></span>
+        <button id="logout-button" class="button button-quiet hidden" type="button">Log out</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="auth-view" class="auth-layout">
+        <div class="hero-copy">
+          <span class="eyebrow"><span class="eyebrow-dot"></span> A happier shared home</span>
+          <h1>Less chore stress.<br><span>More roomie harmony.</span></h1>
+          <p>Make household chores feel fair, simple, and actually manageable. Plan together, share the load, and celebrate the little wins.</p>
+          <div class="hero-points">
+            <div><span class="point-icon">↗</span><span><strong>Clear ownership</strong><small>Everyone knows what’s theirs.</small></span></div>
+            <div><span class="point-icon">♡</span><span><strong>Shared responsibility</strong><small>Keep the home running smoothly.</small></span></div>
+            <div><span class="point-icon">✓</span><span><strong>Visible progress</strong><small>Small wins add up.</small></span></div>
+          </div>
+        </div>
+        <div class="auth-card">
+          <div class="auth-tabs" role="tablist" aria-label="Account options">
+            <button id="login-tab" class="auth-tab active" type="button" role="tab" aria-selected="true">Log in</button>
+            <button id="register-tab" class="auth-tab" type="button" role="tab" aria-selected="false">Create account</button>
+          </div>
+          <div class="auth-heading">
+            <h2 id="auth-title">Welcome back</h2>
+            <p id="auth-subtitle">Log in to see what needs doing.</p>
+          </div>
+          <form id="auth-form">
+            <label id="name-field" class="field hidden">Your name
+              <input id="name-input" name="name" autocomplete="name" minlength="2" maxlength="80" placeholder="e.g. Sankeerthana">
+            </label>
+            <label class="field">Email address
+              <input id="email-input" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com">
+            </label>
+            <label class="field">Password
+              <input id="password-input" name="password" type="password" autocomplete="current-password" required minlength="8" maxlength="72" placeholder="At least 8 characters">
+            </label>
+            <button id="auth-submit" class="button button-primary button-full" type="submit">Log in <span>→</span></button>
+          </form>
+          <p id="auth-message" class="form-message" role="status" aria-live="polite"></p>
+          <p class="privacy-note">🔒 Your password is securely hashed. Your household data stays behind your account.</p>
+        </div>
+      </section>
+
+      <section id="dashboard-view" class="dashboard hidden">
+        <div class="dashboard-intro">
+          <div>
+            <span class="eyebrow"><span class="eyebrow-dot"></span> Your shared space</span>
+            <h1>Good things get done <span>together.</span></h1>
+            <p>One small task at a time makes a big difference.</p>
+          </div>
+          <div class="date-chip"><span>☀</span><span id="today-label"></span></div>
+        </div>
+
+        <section id="household-setup" class="setup-grid">
+          <article class="panel setup-panel">
+            <span class="panel-icon lavender">＋</span>
+            <h2>Create a household</h2>
+            <p>Start a shared space and invite your roommates with a code.</p>
+            <form id="create-household-form" class="inline-form">
+              <label class="sr-only" for="household-name">Household name</label>
+              <input id="household-name" required minlength="2" maxlength="80" placeholder="e.g. Sunshine Flat">
+              <button class="button button-primary" type="submit">Create</button>
+            </form>
+          </article>
+          <article class="panel setup-panel">
+            <span class="panel-icon mint">↗</span>
+            <h2>Join a household</h2>
+            <p>Already have a roomie code? Enter it to join the team.</p>
+            <form id="join-household-form" class="inline-form">
+              <label class="sr-only" for="invite-code">Invite code</label>
+              <input id="invite-code" required minlength="8" maxlength="8" placeholder="8-character code" autocapitalize="characters">
+              <button class="button button-dark" type="submit">Join</button>
+            </form>
+          </article>
+        </section>
+
+        <section id="planner-view" class="hidden">
+          <div class="household-bar panel">
+            <div>
+              <span class="section-kicker">CURRENT HOUSEHOLD</span>
+              <h2 id="current-household-name">Your household</h2>
+              <p>Invite code <strong id="current-invite-code"></strong> <button id="copy-code-button" class="text-button" type="button">Copy</button></p>
+            </div>
+            <label class="household-switcher">Switch household
+              <select id="household-select" aria-label="Select household"></select>
+            </label>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card"><span class="stat-icon stat-purple">▤</span><span class="stat-label">All chores</span><strong id="stat-total">0</strong><small>On your shared list</small></article>
+            <article class="stat-card"><span class="stat-icon stat-orange">◷</span><span class="stat-label">To do</span><strong id="stat-pending">0</strong><small>Ready to be tackled</small></article>
+            <article class="stat-card"><span class="stat-icon stat-green">✓</span><span class="stat-label">Completed</span><strong id="stat-completed">0</strong><small>Look at you go!</small></article>
+            <article class="stat-card"><span class="stat-icon stat-blue">♙</span><span class="stat-label">Roommates</span><strong id="stat-members">0</strong><small>Sharing the load</small></article>
+          </div>
+
+          <div class="planner-layout">
+            <section class="panel chores-panel">
+              <div class="panel-header">
+                <div><span class="section-kicker">THE GAME PLAN</span><h2>Chore board</h2></div>
+                <div class="filters">
+                  <label class="sr-only" for="status-filter">Filter chores</label>
+                  <select id="status-filter"><option value="all">All chores</option><option value="pending">To do</option><option value="completed">Completed</option></select>
+                  <button id="add-chore-button" class="button button-primary" type="button">＋ Add chore</button>
+                </div>
+              </div>
+              <div id="chore-list" class="chore-list"></div>
+              <div id="empty-state" class="empty-state hidden"><div class="empty-illustration">✦</div><h3>It's a fresh start!</h3><p>No chores here yet. Add the first one and get the ball rolling.</p><button id="empty-add-button" class="button button-primary" type="button">Add your first chore</button></div>
+            </section>
+
+            <aside class="side-column">
+              <section class="panel members-panel">
+                <div class="panel-header"><div><span class="section-kicker">YOUR TEAM</span><h2>Roommates</h2></div><span id="member-count-badge" class="count-badge">0</span></div>
+                <div id="member-list" class="member-list"></div>
+                <div class="invite-tip"><span>✉</span><p><strong>Bring your roomies in</strong><br>Share the invite code above so everyone can join.</p></div>
+              </section>
+              <section class="tip-card"><span class="tip-spark">✦</span><p class="tip-label">A LITTLE REMINDER</p><h3>Fair doesn't always mean equal.</h3><p>Talk about time, energy, and schedules. A good plan should work for everyone.</p></section>
+            </aside>
+          </div>
+        </section>
+        <p id="dashboard-message" class="form-message" role="status" aria-live="polite"></p>
+      </section>
+    </main>
+    <footer><span>roomieplan</span><span>Made for a happier home · Roommates Chore Planner</span></footer>
+  </div>
+
+  <dialog id="chore-dialog" class="chore-dialog">
+    <form id="chore-form" method="dialog">
+      <div class="dialog-heading"><div><span class="section-kicker">MAKE A PLAN</span><h2 id="dialog-title">Add a chore</h2></div><button id="close-dialog" class="close-button" type="button" aria-label="Close">×</button></div>
+      <label class="field">Chore name<input id="chore-title" required minlength="2" maxlength="100" placeholder="e.g. Clean the kitchen"></label>
+      <label class="field">Details <span class="optional">(optional)</span><textarea id="chore-description" maxlength="500" rows="3" placeholder="Anything your roommate should know?"></textarea></label>
+      <div class="form-row">
+        <label class="field">Assign to<select id="chore-assignee"><option value="">Anyone / unassigned</option></select></label>
+        <label class="field">Due date<input id="chore-due-date" type="date"></label>
+      </div>
+      <p id="chore-message" class="form-message" role="status"></p>
+      <div class="dialog-actions"><button id="cancel-dialog" class="button button-quiet" type="button">Cancel</button><button id="save-chore" class="button button-primary" type="submit">Save chore</button></div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js" defer></script>
+</body>
+</html>
